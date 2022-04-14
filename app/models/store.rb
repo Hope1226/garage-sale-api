@@ -1,5 +1,4 @@
 class Store < ApplicationRecord
-  
   # Validations
   validates :name, presence: { message: 'field can not be blank' }
   validates :description, presence: { message: 'field can not be blank' }
