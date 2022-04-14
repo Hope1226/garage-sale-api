@@ -1,5 +1,5 @@
 class StoresController < ApplicationController
-  before_action :authenticate_user!
+  before_action :authenticate_user!, only: %i[show update destroy]
   before_action :set_store, only: %i[show update destroy]
 
   # Get / Stores
