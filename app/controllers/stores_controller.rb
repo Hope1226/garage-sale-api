@@ -5,7 +5,13 @@ class StoresController < ApplicationController
   # Get / Stores
   def index
     @stores = Store.all
-    render json: @stores
+    render json: @stores.to_json(include: :products)
+  end
+
+  # Get / Stores / 1
+
+  def show
+    render json: @store.to_json(include: :products)
   end
 
   # Post / Stores
