@@ -5,4 +5,7 @@ class User < ApplicationRecord
          :jwt_authenticatable, jwt_revocation_strategy: self
 
   validates :name, presence: { message: 'field can not be blank' }
+
+  has_many :stores, dependent: :destroy
+  has_many :products, dependent: :destroy
 end
