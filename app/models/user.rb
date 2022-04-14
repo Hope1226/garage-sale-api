@@ -6,5 +6,6 @@ class User < ApplicationRecord
 
   validates :name, presence: { message: 'field can not be blank' }
 
-  has_many :stores
+  has_many :stores, dependent: :destroy
+  has_many :products, dependent: :destroy
 end

@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resources :products
+  resources :stores
   devise_for :users,path: '', path_names: {
     sign_in: 'login',
     sign_out: 'logout',
@@ -8,8 +10,6 @@ Rails.application.routes.draw do
     sessions: 'users/sessions',
     registrations: 'users/registrations'
   }
-
-  resources :stores
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Defines the root path route ("/")
