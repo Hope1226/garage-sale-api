@@ -11,7 +11,7 @@ class ProductsController < ApplicationController
 
   # GET /products/1
   def show
-    render json: @product.to_json(include: { user: { only: %i[name email id] } })
+    render json: @product.to_json(include: :seller)
   end
 
   # POST /products
