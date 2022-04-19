@@ -32,7 +32,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_04_18_153552) do
     t.bigint "store_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "stock", null: false
+    t.decimal "stock", null: false
     t.string "uom", null: false
     t.index ["seller_id"], name: "index_products_on_seller_id"
     t.index ["store_id"], name: "index_products_on_store_id"

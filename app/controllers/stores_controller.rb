@@ -11,7 +11,7 @@ class StoresController < ApplicationController
   # Get / Stores / 1
 
   def show
-    render json: @store.to_json(include: :products)
+    render json: @store.to_json(include: %i[seller products])
   end
 
   # Post / Stores
