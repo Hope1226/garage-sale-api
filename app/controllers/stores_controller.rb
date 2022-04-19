@@ -17,7 +17,6 @@ class StoresController < ApplicationController
   # Post / Stores
   def create
     @new_store = current_user.stores.create(store_params)
-
     if @new_store.save
       render json: @new_store, status: :created, location: @store
     else
