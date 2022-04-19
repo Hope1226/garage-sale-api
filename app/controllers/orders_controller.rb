@@ -10,12 +10,12 @@ class OrdersController < ApplicationController
 
   # GET /orders/1
   def show
-    render json: @order
+    render json: @order.to_json(include: :customer)
   end
 
   # POST /orders
   def create
-    @order = Order.new(order_params)
+    @order = current_user.orders.create(order_params)
 
     if @order.save
       render json: @order, status: :created, location: @order
@@ -47,6 +47,6 @@ class OrdersController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def order_params
-    params.require(:order).permit(:quantity, :user_id, :product_id)
+    params.require(:order).permit(:quantity, :product_id)
   end
 end

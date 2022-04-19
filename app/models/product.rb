@@ -8,5 +8,6 @@ class Product < ApplicationRecord
 
   belongs_to :seller
   belongs_to :store
-  has_many :orders, through: :customers
+  has_many :orders
+  has_many :customers, through: :orders
 end
