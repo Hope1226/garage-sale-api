@@ -11,7 +11,7 @@ class ProductsController < ApplicationController
 
   # GET /products/1
   def show
-    render json: @product
+    render json: @product.to_json(include: %i[seller orders])
   end
 
   # POST /products

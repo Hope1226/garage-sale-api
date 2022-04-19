@@ -6,6 +6,8 @@ class Product < ApplicationRecord
   validates :stock, presence: { message: 'field can not be blank' }
   validates :uom, presence: { message: 'field can not be blank' }
 
-  belongs_to :user
+  belongs_to :seller
   belongs_to :store
+  has_many :orders, dependent: :destroy
+  has_many :customers, through: :orders
 end
