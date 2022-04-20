@@ -10,4 +10,5 @@ class Product < ApplicationRecord
   belongs_to :store
   has_many :orders, dependent: :destroy
   has_many :customers, through: :orders
+  has_many :ranks, dependent: :destroy
 end
