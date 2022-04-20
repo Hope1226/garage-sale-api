@@ -10,6 +10,6 @@ class Order < ApplicationRecord
   private
 
   def update_product_stock
-    product.update(stock: product.stock - (quantity / 2))
+    product.update(stock: product.stock -= (quantity / 2))
   end
 end
