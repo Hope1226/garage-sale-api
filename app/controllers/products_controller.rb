@@ -11,7 +11,11 @@ class ProductsController < ApplicationController
 
   # GET /products/1
   def show
-    render json: @product.to_json(include: %i[seller orders])
+    if current_user.seller?
+      render json: @product.to_json(include: :orders)
+    else
+      render json: @product.to_json(include: :seller)
+    end
   end
 
   # POST /products
