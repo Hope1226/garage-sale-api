@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :ranks, only: %i[create update]
   resources :orders
   resources :products
   resources :stores
