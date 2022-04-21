@@ -1,4 +1,5 @@
 class ConversationsController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_conversation, only: %i[show destroy]
 
   # GET /conversations
@@ -14,12 +15,16 @@ class ConversationsController < ApplicationController
 
   # GET /conversations/1
   def show
-    render json: @conversation
+    if current_user.seller?
+      render json: @conversation.to_json(include: :customer)
+    else
+      render json: @conversation.to_json(include: :seller)
+    end
   end
 
   # POST /conversations
   def create
-    @conversation = current_user.constraints.create(conversation_params)
+    @conversation = current_user.conversations.create(conversation_params)
 
     if @conversation.save
       render json: @conversation, status: :created, location: @conversation
@@ -35,12 +40,12 @@ class ConversationsController < ApplicationController
 
   private
     # Use callbacks to share common setup or constraints between actions.
-    def set_conversation
-      @conversation = Conversation.find(params[:id])
-    end
+  def set_conversation
+    @conversation = Conversation.find(params[:id])
+  end
 
-    # Only allow a list of trusted parameters through.
-    def conversation_params
-      params.require(:conversation).permit(current_user.seller? ? :customer_id : :seller_id)
-    end
+  # Only allow a list of trusted parameters through.
+  def conversation_params
+    params.require(:conversation).permit(current_user.seller? ? :customer_id : :seller_id)
+  end
 end
