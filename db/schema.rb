@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_04_18_153552) do
+ActiveRecord::Schema[7.0].define(version: 2022_04_20_181140) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -20,6 +20,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_04_18_153552) do
     t.bigint "product_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "completed", default: false
     t.index ["customer_id"], name: "index_orders_on_customer_id"
     t.index ["product_id"], name: "index_orders_on_product_id"
   end
@@ -34,8 +35,29 @@ ActiveRecord::Schema[7.0].define(version: 2022_04_18_153552) do
     t.datetime "updated_at", null: false
     t.decimal "stock", null: false
     t.string "uom", null: false
+    t.integer "rank", default: 0
     t.index ["seller_id"], name: "index_products_on_seller_id"
     t.index ["store_id"], name: "index_products_on_store_id"
+  end
+
+  create_table "ranks", force: :cascade do |t|
+    t.integer "score", null: false
+    t.bigint "customer_id", null: false
+    t.bigint "product_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["customer_id"], name: "index_ranks_on_customer_id"
+    t.index ["product_id"], name: "index_ranks_on_product_id"
+  end
+
+  create_table "reviews", force: :cascade do |t|
+    t.text "content", null: false
+    t.bigint "customer_id", null: false
+    t.bigint "product_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["customer_id"], name: "index_reviews_on_customer_id"
+    t.index ["product_id"], name: "index_reviews_on_product_id"
   end
 
   create_table "stores", force: :cascade do |t|
@@ -68,5 +90,9 @@ ActiveRecord::Schema[7.0].define(version: 2022_04_18_153552) do
   add_foreign_key "orders", "users", column: "customer_id"
   add_foreign_key "products", "stores"
   add_foreign_key "products", "users", column: "seller_id"
+  add_foreign_key "ranks", "products"
+  add_foreign_key "ranks", "users", column: "customer_id"
+  add_foreign_key "reviews", "products"
+  add_foreign_key "reviews", "users", column: "customer_id"
   add_foreign_key "stores", "users", column: "seller_id"
 end

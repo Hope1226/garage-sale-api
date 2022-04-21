@@ -7,10 +7,10 @@ class User < ApplicationRecord
   validates :name, presence: { message: 'field can not be blank' }
 
   def customer?
-    type == 'customer'
+    type == 'Customer'
   end
 
   def seller?
-    type == 'seller'
+    type == 'Seller'
   end
 end
