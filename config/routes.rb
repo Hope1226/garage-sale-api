@@ -1,8 +1,9 @@
 Rails.application.routes.draw do
-  resources :reviews
   resources :ranks, only: %i[create update]
   resources :orders
-  resources :products
+  resources :products do
+    resources :reviews
+  end
   resources :stores
   devise_for :users,path: '', path_names: {
     sign_in: 'login',
