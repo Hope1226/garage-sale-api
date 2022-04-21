@@ -10,9 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_04_21_162717) do
+ActiveRecord::Schema[7.0].define(version: 2022_04_21_172615) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "conversations", force: :cascade do |t|
+    t.bigint "customer_id", null: false
+    t.bigint "seller_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["customer_id"], name: "index_conversations_on_customer_id"
+    t.index ["seller_id"], name: "index_conversations_on_seller_id"
+  end
 
   create_table "orders", force: :cascade do |t|
     t.decimal "quantity", null: false
@@ -89,6 +98,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_04_21_162717) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "conversations", "users", column: "customer_id"
+  add_foreign_key "conversations", "users", column: "seller_id"
   add_foreign_key "orders", "products"
   add_foreign_key "orders", "users", column: "customer_id"
   add_foreign_key "products", "stores"
