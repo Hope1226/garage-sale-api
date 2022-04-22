@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
-  resources :messages
-  resources :conversations, except: %i[update]
+  resources :conversations, except: %i[update] do
+    resources :messages, except: %i[update]
+  end
   resources :ranks, only: %i[create update]
   resources :orders
   resources :products do
