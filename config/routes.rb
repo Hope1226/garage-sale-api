@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :messages
   resources :conversations, except: %i[update]
   resources :ranks, only: %i[create update]
   resources :orders
