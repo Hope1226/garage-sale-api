@@ -1,11 +1,14 @@
 class MessagesController < ApplicationController
-  before_action :set_message, only: %i[ show update destroy ]
+  before_action :set_message, only: %i[show update destroy]
 
   # GET /messages
   def index
-    @messages = Message.all
-
-    render json: @messages
+    @messages = Message.all.where(conversation_id: params[:conversation_id])
+    if current_user.seller?
+      render json: @messages.to_json(include: :customer)
+    else
+      render json: @messages.to_json(include: :seller)
+    end
   end
 
   # GET /messages/1
@@ -15,10 +18,10 @@ class MessagesController < ApplicationController
 
   # POST /messages
   def create
-    @message = Message.new(message_params)
+    @message = current_user.messages.create(message_params)
 
     if @message.save
-      render json: @message, status: :created, location: @message
+      render json: @message, status: :created
     else
       render json: @message.errors, status: :unprocessable_entity
     end
@@ -46,6 +49,6 @@ class MessagesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def message_params
-      params.require(:message).permit(:content, :conversation_id)
+      params.require(:message).permit(:content, :conversation_id, current_user.seller? ? :customer_id : :seller_id)
     end
 end
