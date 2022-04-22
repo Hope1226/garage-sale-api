@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_04_21_172615) do
+ActiveRecord::Schema[7.0].define(version: 2022_04_22_162202) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -21,6 +21,18 @@ ActiveRecord::Schema[7.0].define(version: 2022_04_21_172615) do
     t.datetime "updated_at", null: false
     t.index ["customer_id"], name: "index_conversations_on_customer_id"
     t.index ["seller_id"], name: "index_conversations_on_seller_id"
+  end
+
+  create_table "messages", force: :cascade do |t|
+    t.text "content", null: false
+    t.bigint "conversation_id", null: false
+    t.bigint "customer_id", null: false
+    t.bigint "seller_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["conversation_id"], name: "index_messages_on_conversation_id"
+    t.index ["customer_id"], name: "index_messages_on_customer_id"
+    t.index ["seller_id"], name: "index_messages_on_seller_id"
   end
 
   create_table "orders", force: :cascade do |t|
@@ -100,6 +112,9 @@ ActiveRecord::Schema[7.0].define(version: 2022_04_21_172615) do
 
   add_foreign_key "conversations", "users", column: "customer_id"
   add_foreign_key "conversations", "users", column: "seller_id"
+  add_foreign_key "messages", "conversations"
+  add_foreign_key "messages", "users", column: "customer_id"
+  add_foreign_key "messages", "users", column: "seller_id"
   add_foreign_key "orders", "products"
   add_foreign_key "orders", "users", column: "customer_id"
   add_foreign_key "products", "stores"
