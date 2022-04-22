@@ -6,19 +6,19 @@ class ConversationsController < ApplicationController
   def index
     if current_user.seller?
       @conversations = Conversation.all.where(seller_id: current_user.id)
-      render json: @conversations.to_json(include: :customer)
+      render json: @conversations.to_json(include: %i[customer messages])
     else
       @conversations = Conversation.all.where(customer_id: current_user.id)
-      render json: @conversations.to_json(include: :seller)
+      render json: @conversations.to_json(include: %i[seller messages])
     end
   end
 
   # GET /conversations/1
   def show
     if current_user.seller?
-      render json: @conversation.to_json(include: :customer)
+      render json: @conversation.to_json(include: %i[customer messages])
     else
-      render json: @conversation.to_json(include: :seller)
+      render json: @conversation.to_json(include: %i[seller messages])
     end
   end
 
