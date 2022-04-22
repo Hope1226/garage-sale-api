@@ -45,6 +45,6 @@ class StoresController < ApplicationController
   end
 
   def store_params
-    params.require(:store).permit(:name, :description)
+    params.require(:store).permit(:name, :description, :category)
   end
 end

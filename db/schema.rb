@@ -10,9 +10,30 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_04_20_181140) do
+ActiveRecord::Schema[7.0].define(version: 2022_04_22_162202) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "conversations", force: :cascade do |t|
+    t.bigint "customer_id", null: false
+    t.bigint "seller_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["customer_id"], name: "index_conversations_on_customer_id"
+    t.index ["seller_id"], name: "index_conversations_on_seller_id"
+  end
+
+  create_table "messages", force: :cascade do |t|
+    t.text "content", null: false
+    t.bigint "conversation_id", null: false
+    t.bigint "customer_id", null: false
+    t.bigint "seller_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["conversation_id"], name: "index_messages_on_conversation_id"
+    t.index ["customer_id"], name: "index_messages_on_customer_id"
+    t.index ["seller_id"], name: "index_messages_on_seller_id"
+  end
 
   create_table "orders", force: :cascade do |t|
     t.decimal "quantity", null: false
@@ -36,6 +57,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_04_20_181140) do
     t.decimal "stock", null: false
     t.string "uom", null: false
     t.integer "rank", default: 0
+    t.string "category", null: false
+    t.string "image"
     t.index ["seller_id"], name: "index_products_on_seller_id"
     t.index ["store_id"], name: "index_products_on_store_id"
   end
@@ -66,6 +89,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_04_20_181140) do
     t.bigint "seller_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "category", null: false
     t.index ["seller_id"], name: "index_stores_on_seller_id"
   end
 
@@ -86,6 +110,11 @@ ActiveRecord::Schema[7.0].define(version: 2022_04_20_181140) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "conversations", "users", column: "customer_id"
+  add_foreign_key "conversations", "users", column: "seller_id"
+  add_foreign_key "messages", "conversations"
+  add_foreign_key "messages", "users", column: "customer_id"
+  add_foreign_key "messages", "users", column: "seller_id"
   add_foreign_key "orders", "products"
   add_foreign_key "orders", "users", column: "customer_id"
   add_foreign_key "products", "stores"
