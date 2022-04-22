@@ -4,4 +4,5 @@ class Customer < User
   has_many :ranks, dependent: :destroy
   has_many :reviews, dependent: :destroy
   has_many :conversations, dependent: :destroy
+  has_many :messages
 end
